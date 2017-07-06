@@ -5,7 +5,7 @@ package com.puppycrawl.tools.checkstyle.checks.javadoc.abstractjavadoc;
  */
 class InputAbstractJavadocUnclosedTagAndInvalidAtSeeReference {
     /**
-     * @see javax.swing.tree.DefaultTreeCellRenderer.getTreeCellRendererComponent()
+     * @see "javax.swing.tree.DefaultTreeCellRenderer.getTreeCellRendererComponent()"error
      */
     void invalidAtSeeReference() {
     }

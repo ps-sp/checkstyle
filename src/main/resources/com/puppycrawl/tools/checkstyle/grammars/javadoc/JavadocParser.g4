@@ -861,8 +861,7 @@ description: (
 
 reference:
       (
-            PACKAGE (DOT | CLASS)* HASH? MEMBER? parameters?
-            | (DOT | CLASS)+ HASH? MEMBER? parameters?
+            PACKAGE_CLASS HASH? MEMBER? parameters?
             | HASH? MEMBER parameters?
       )
       ;

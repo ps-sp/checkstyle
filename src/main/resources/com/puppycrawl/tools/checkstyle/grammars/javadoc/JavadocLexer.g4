@@ -120,11 +120,9 @@ Newline5: NEWLINE
 Leading_asterisk3: LEADING_ASTERISK -> type(LEADING_ASTERISK);
 XmlTagOpen1: '<' -> type(OPEN), pushMode(xmlTagDefinition);
 STRING: '"' .*? '"' {referenceCatched = false;} -> mode(DEFAULT_MODE);
-PACKAGE: [a-z_$] ([a-z0-9_$] | '.')+ [a-z0-9_$] {_input.LA(1) == '.' || _input.LA(1) == '}'
-                     || Character.isWhitespace(_input.LA(1))}? {referenceCatched = true;};
-DOT: '.';
+PACKAGE_CLASS: Identifier ('.' Identifier)* {_input.LA(1) == '#' || _input.LA(1) == '}'
+                   || Character.isWhitespace(_input.LA(1))}? {referenceCatched = true;};
 HASH: '#' {referenceCatched = true;} -> mode(classMemeber);
-CLASS: [A-Z] [a-zA-Z0-9_$]* {referenceCatched = true;};
 End20: JAVADOC_INLINE_TAG_END
       {
             insideJavadocInlineTag--;
@@ -253,9 +251,7 @@ Char8: .
 mode value;
 Space6: WS -> type(WS);
 Newline4: NEWLINE -> type(NEWLINE);
-Package2: PACKAGE -> type(PACKAGE);
-Dot2: DOT -> type(DOT);
-Class2: CLASS -> type(CLASS);
+Package_Class2: PACKAGE_CLASS -> type(PACKAGE_CLASS);
 Hash2: HASH -> type(HASH), mode(classMemeber);
 End1: JAVADOC_INLINE_TAG_END
       {insideJavadocInlineTag--; recognizeXmlTags=true;}
@@ -265,6 +261,10 @@ Char10: .
       {
             skipCurrentTokenConsuming();
       } -> skip, mode(DEFAULT_MODE);
+
+fragment JavaLetter: [A-Za-z_$];
+fragment JavaLetterOrDigit: [0-9A-Za-z_$];
+fragment Identifier: JavaLetter (JavaLetterOrDigit)*;
 
 
 
