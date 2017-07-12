@@ -250,4 +250,10 @@ public class JavadocParseTreeTest extends BaseCheckTestSupport {
         verifyJavadocTree(getPath("expectedJavadocWithCrAsNewlineAst.txt"),
                 getPath("InputJavadocWithCrAsNewline.javadoc"));
     }
+
+    @Test
+    public void testUppercaseInPackageName() throws Exception {
+        verifyJavadocTree(getDocPath("expectedUppercaseInPackageNameAst.txt"),
+                getDocPath("InputUppercaseInPackageName.javadoc"));
+    }
 }
