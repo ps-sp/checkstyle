@@ -23,6 +23,8 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.List;
 
+import java.util.concurrent.TimeUnit;
+
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.BailErrorStrategy;
 import org.antlr.v4.runtime.BaseErrorListener;
@@ -119,9 +121,15 @@ public class JavadocDetailNodeParser {
         final ParseStatus result = new ParseStatus();
 
         try {
+            long start = System.nanoTime();
             final ParseTree parseTree = parseJavadocAsParseTree(javadocComment);
+            System.out.println("Time by ANTLR: "
+                    + TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - start));
 
+            long startAgain = System.nanoTime();
             final DetailNode tree = convertParseTreeToDetailNode(parseTree);
+            System.out.println("Time to convert ParseTree to DetailNode: "
+                    + TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startAgain));
             // adjust first line to indent of /**
             adjustFirstLineToJavadocIndent(tree,
                         javadocCommentAst.getColumnNo()
@@ -182,8 +190,10 @@ public class JavadocDetailNodeParser {
         // This strategy stops parsing when parser error occurs.
         // By default it uses Error Recover Strategy which is slow and useless.
         parser.setErrorHandler(new JavadocParserErrorStrategy());
-
-        return parser.javadoc();
+        long start = System.nanoTime();
+        ParseTree javadoc = parser.javadoc();
+        System.out.println("Time by ANTLR parser: " + TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - start));
+        return javadoc;
     }
 
     /**

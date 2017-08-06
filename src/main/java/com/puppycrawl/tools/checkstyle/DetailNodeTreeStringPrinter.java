@@ -21,6 +21,7 @@ package com.puppycrawl.tools.checkstyle;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import com.puppycrawl.tools.checkstyle.JavadocDetailNodeParser.ParseErrorMessage;
 import com.puppycrawl.tools.checkstyle.JavadocDetailNodeParser.ParseStatus;
@@ -66,7 +67,10 @@ public final class DetailNodeTreeStringPrinter {
      */
     public static DetailNode parseJavadocAsDetailNode(DetailAST blockComment) {
         final JavadocDetailNodeParser parser = new JavadocDetailNodeParser();
+        long start = System.nanoTime();
         final ParseStatus status = parser.parseJavadocAsDetailNode(blockComment);
+        System.out.println("Time by JavadocDetailNodeParser: "
+                + TimeUnit.NANOSECONDS.toMillis(System.nanoTime()-start));
         if (status.getParseErrorMessage() != null) {
             throw new IllegalArgumentException(getParseErrorMessage(status.getParseErrorMessage()));
         }
